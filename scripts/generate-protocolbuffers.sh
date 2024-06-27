@@ -5,11 +5,24 @@ if ! command -v protoc &> /dev/null; then
     exit 1
 fi
 
+if ! command -v go &> /dev/null; then
+    printf "%s\n" "Golang not installed, please install it"
+    exit 1
+fi
+
+if ! command -v npm &> /dev/null; then
+    printf "%s\n" "Node Package Manager (NPM) not installed, please install it"
+    exit 1
+fi
+
 if [[ "$(basename "$(pwd)")" == "scripts" ]]; then
     cd ..
 fi
 
 printf "GENERATING PROTOCOL BUFFERS v3"
+
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 cd ./frontend
 npm install
